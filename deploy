@@ -1,0 +1,10 @@
+#!/bin/bash
+
+input=`cat`
+
+if [[ "$1" == "stdin" ]]; then
+  echo "$input" > /tmp/tmp.json
+  input=/tmp/tmp.json
+fi
+
+aws s3 cp $input s3://pipeoutputfilesxxwr --acl public-read

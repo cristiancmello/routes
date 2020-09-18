@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+
+const { rl } = require("./bootstrap");
+
+rl.on("line", function (line) {
+  const partialOutput = {
+    intention: "string",
+  };
+
+  let output = {};
+
+  try {
+    const jsonLine = JSON.parse(line);
+
+    switch (typeof jsonLine) {
+      case "number":
+      case "boolean":
+        {
+          output = {
+            ...partialOutput,
+            html: `${jsonLine}`,
+          };
+        }
+        break;
+
+      default: {
+        output = {
+          ...partialOutput,
+          html: `${jsonLine.html}`,
+        };
+      }
+    }
+  } catch (e) {
+    output = {
+      ...partialOutput,
+      html: `${line}`,
+    };
+  } finally {
+    console.log(JSON.stringify(output));
+  }
+});

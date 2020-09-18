@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+
+const { rl, randomId } = require("./bootstrap");
+
+function reverseString(str) {
+  return str.split("").reverse().join("");
+}
+
+rl.on("line", function (line) {
+  const routeId = process.argv[2] || randomId();
+  const reverseId = reverseString(routeId);
+
+  const processData = (line) => {
+    try {
+      body = JSON.parse(line);
+    } catch (e) {
+      body = line;
+    }
+
+    return {
+      body,
+    };
+  };
+
+  let data = processData(line);
+
+  let route = {
+    id: routeId,
+    reverseId,
+    data,
+  };
+
+  let output = [route];
+
+  try {
+    let parsedLine = JSON.parse(line);
+    let lastInput = parsedLine.slice(-1).pop();
+
+    data = {};
+
+    route = {
+      ...route,
+      data,
+    };
+
+    parsedLine.push(route);
+
+    console.log(JSON.stringify(parsedLine));
+  } catch (e) {
+    const type = typeof data.body;
+
+    data = {
+      ...data,
+      type,
+    };
+
+    route = {
+      ...route,
+      data,
+    };
+
+    output = [route];
+
+    console.log(JSON.stringify(output));
+  }
+});

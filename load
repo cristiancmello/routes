@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Loading commands..."
+
+chmod +x string html deploy route
+
+alias string=./string
+alias html=./html
+alias save=./save
+alias deploy=./deploy
+alias route=./route

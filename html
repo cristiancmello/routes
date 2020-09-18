@@ -1,0 +1,42 @@
+#!/home/kiko/.nvm/versions/node/v12.18.4/bin/node
+
+const { rl } = require("./bootstrap");
+
+rl.on("line", function (line) {
+  const partialOutput = {
+    command: "html",
+  };
+
+  let jsonLine = {};
+  let output = {};
+  let html = (body) => {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  ${body}
+</body>
+</html>`;
+  };
+
+  try {
+    jsonLine = JSON.parse(line);
+
+    if (process.argv[2] === "json") {
+      output = {
+        ...partialOutput,
+        html: html(jsonLine.html),
+      };
+    } else {
+      output = html;
+    }
+  } catch (e) {
+    console.log(e.message);
+  } finally {
+    console.log(JSON.stringify(output));
+  }
+});
