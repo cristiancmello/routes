@@ -6,61 +6,87 @@ function reverseString(str) {
   return str.split("").reverse().join("");
 }
 
-rl.on("line", function (line) {
-  const routeId = process.argv[2] || randomId();
-  const reverseId = reverseString(routeId);
+class Route {
+  contructor(input) {
+    // console.log(input);
+  }
 
-  const processData = (line) => {
-    try {
-      body = JSON.parse(line);
-    } catch (e) {
-      body = line;
-    }
+  generate = () => {
+    const routeId = process.argv[2] || randomId();
+    const reverseId = reverseString(routeId);
 
     return {
-      body,
+      id: routeId,
+      reverseId,
     };
   };
 
-  let data = processData(line);
-
-  let route = {
-    id: routeId,
-    reverseId,
-    data,
+  write = () => {
+    console.log(JSON.stringify(this.generate()));
   };
+}
 
-  let output = [route];
+rl.on("line", (input) => {
+  const route = new Route(input);
 
-  try {
-    let parsedLine = JSON.parse(line);
-    let lastInput = parsedLine.slice(-1).pop();
-
-    data = {};
-
-    route = {
-      ...route,
-      data,
-    };
-
-    parsedLine.push(route);
-
-    console.log(JSON.stringify(parsedLine));
-  } catch (e) {
-    const type = typeof data.body;
-
-    data = {
-      ...data,
-      type,
-    };
-
-    route = {
-      ...route,
-      data,
-    };
-
-    output = [route];
-
-    console.log(JSON.stringify(output));
-  }
+  route.write();
 });
+
+// rl.on("line", function (line) {
+//   const routeId = process.argv[2] || randomId();
+//   const reverseId = reverseString(routeId);
+
+//   const processData = (line) => {
+//     try {
+//       body = JSON.parse(line);
+//     } catch (e) {
+//       body = line;
+//     }
+
+//     return {
+//       body,
+//     };
+//   };
+
+//   const processRoute = (route, data) => {
+//     return {
+//       ...route,
+//       data,
+//     };
+//   };
+
+//   let data = processData(line);
+
+//   let route = {
+//     id: routeId,
+//     reverseId,
+//     data,
+//   };
+
+//   let output = [route];
+
+//   try {
+//     let parsedLine = JSON.parse(line);
+//     let lastInput = parsedLine.slice(-1).pop();
+
+//     data = {};
+
+//     route = processRoute(route, data);
+
+//     parsedLine.push(route);
+
+//     console.log(JSON.stringify(parsedLine));
+//   } catch (e) {
+//     const type = typeof data.body;
+
+//     data = {
+//       ...data,
+//       type,
+//     };
+
+//     route = processRoute(route, data);
+//     output = [route];
+
+//     console.log(JSON.stringify(output));
+//   }
+// });
