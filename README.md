@@ -6,6 +6,14 @@ The Routes language.
 
 * Demonstrate a semantic language using Composition by Pipeline;
 
+## Instructions
+
+* Load all aliases
+
+```
+source load
+```
+
 ## Definitions
 
 ```bash
