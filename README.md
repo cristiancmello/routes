@@ -15,3 +15,7 @@ echo "hello, world" | route
 ```json
 {"intention":"route"}
 ```
+
+## Docs
+
+![](./docs/gif1.gif)

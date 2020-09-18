@@ -7,18 +7,45 @@ function reverseString(str) {
 }
 
 class Route {
-  contructor(input) {
-    // console.log(input);
+  constructor(input) {
+    this.originalInput = input;
+    this.input = this.processInput();
   }
+
+  processInput = () => {
+    let parsedInput = {};
+
+    this.lastInput = null;
+
+    try {
+      parsedInput = JSON.parse(this.originalInput);
+
+      this.lastInput = parsedInput;
+
+      return parsedInput;
+    } catch (e) {
+      return this.originalInput;
+    }
+  };
 
   generate = () => {
     const routeId = process.argv[2] || randomId();
     const reverseId = reverseString(routeId);
 
-    return {
+    const routeObject = {
       id: routeId,
       reverseId,
     };
+
+    if (this.lastInput !== null) {
+      if (this.lastInput.length > 0) {
+        this.lastInput.push(routeObject);
+
+        return this.lastInput;
+      }
+    }
+
+    return [routeObject];
   };
 
   write = () => {
@@ -31,62 +58,3 @@ rl.on("line", (input) => {
 
   route.write();
 });
-
-// rl.on("line", function (line) {
-//   const routeId = process.argv[2] || randomId();
-//   const reverseId = reverseString(routeId);
-
-//   const processData = (line) => {
-//     try {
-//       body = JSON.parse(line);
-//     } catch (e) {
-//       body = line;
-//     }
-
-//     return {
-//       body,
-//     };
-//   };
-
-//   const processRoute = (route, data) => {
-//     return {
-//       ...route,
-//       data,
-//     };
-//   };
-
-//   let data = processData(line);
-
-//   let route = {
-//     id: routeId,
-//     reverseId,
-//     data,
-//   };
-
-//   let output = [route];
-
-//   try {
-//     let parsedLine = JSON.parse(line);
-//     let lastInput = parsedLine.slice(-1).pop();
-
-//     data = {};
-
-//     route = processRoute(route, data);
-
-//     parsedLine.push(route);
-
-//     console.log(JSON.stringify(parsedLine));
-//   } catch (e) {
-//     const type = typeof data.body;
-
-//     data = {
-//       ...data,
-//       type,
-//     };
-
-//     route = processRoute(route, data);
-//     output = [route];
-
-//     console.log(JSON.stringify(output));
-//   }
-// });
